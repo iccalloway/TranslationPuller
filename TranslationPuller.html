@@ -1,0 +1,61 @@
+ <!DOCTYPE html>
+<html>
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type"></meta>
+        <meta content="utf-8" http-equiv="encoding"></meta>
+        <link rel="stylesheet" href="./TranslationPuller.css"></link>
+        <title>Translation Puller</title>
+    </head>
+    <body>
+        <p><b>Translation Puller</b></p>
+        <script src="./jquery-latest.js"></script>
+        <!-- Additional scripts (which aren't mine)-->
+        <script src="./jquery.tablesorter.js"></script>
+        <script src="./excellentexport.min.js"></script>
+        <form>
+            Word or Idiom:<br>
+            <input type="text" id="word" name="word" onkeydown = "if (event.keyCode == 13)
+             document.getElementById('button').click()"><br><br>
+            Translate from:<br>
+            <select id="fromLanguage">
+                <option value="bul">Bulgarian</option>
+                <option value="eng" selected>English</option>
+                <option value="fra">French</option>
+                <option value="deu">German</option>
+                <option value="ell">Greek</option>
+                <option value="fin">Finnish</option>
+                <option value="ita">Italian</option>
+                <option value="ind">Indonesian</option>
+                <option value="jap">Japanese</option>
+                <option value="lat">Latin</option>
+                <option value="lit">Lithuanian</option>
+                <option value="mlg">Malagasy</option>
+                <option value="nor">Norwegian</option>
+                <option value="pol">Polish</option>
+                <option value="por">Portuguese</option>
+                <option value="rus">Russian</option>
+                <option value="spa">Spanish</option>
+                <option value="swe">Swedish</option>                
+                <option value="tur">Turkish</option>
+            </select><br><br>
+            Translate into:<br>
+            <small><i>(Leave blank for all available)</i></small><br>
+            <input type="text" id="language" list = "languages" name="language" onkeydown = "if (event.keyCode == 13)
+             document.getElementById('button').click()">
+            </input>
+            <datalist id ="languages">
+            </datalist>
+            <script src="./populate_list.js"></script>
+            <br>
+            <div id="loading">
+		Loading extra files, hold on a sec...
+	    </div>
+            <br>
+            <button type="button" id ="button" onclick="main()">Translate!</button>
+        </form>
+        <!--Another script of mine-->
+        <script src="./TranslationPuller.js"></script>
+        <answers id="answerbegin">
+        </answers>
+    </body>
+</html> 
