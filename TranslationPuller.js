@@ -6,7 +6,7 @@
 var two_codes
 var two_codes_loaded = false
 var code_req = new XMLHttpRequest();
-code_req.open("GET", "./ISO-Two-to-Three.json");
+code_req.open("GET", "./language_info/ISO-Two-to-Three.json");
 code_req.overrideMimeType("application/json");
 code_req.send(null);
 code_req.onreadystatechange = function(){
@@ -19,7 +19,7 @@ code_req.onreadystatechange = function(){
 var three_codes
 var three_codes_loaded = false
 var three_req = new XMLHttpRequest();
-three_req.open("GET", "./ISO-Three-to-Two.json");
+three_req.open("GET", "./language_info/ISO-Three-to-Two.json");
 three_req.overrideMimeType("application/json");
 three_req.send(null);
 three_req.onreadystatechange = function(){
@@ -32,7 +32,7 @@ three_req.onreadystatechange = function(){
 var language_names
 var language_names_loaded = false
 var req = new XMLHttpRequest();
-req.open("GET", "./full_languages.json");
+req.open("GET", "./language_info/full_languages.json");
 req.overrideMimeType("application/json");
 req.send(null);
 req.onreadystatechange = function(){

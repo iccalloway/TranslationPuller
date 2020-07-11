@@ -1,7 +1,7 @@
 new_list  = document.getElementById("languages");
 var language_names
 var options = new XMLHttpRequest();
-options.open("GET", "./languages_datalist.json");
+options.open("GET", "./language_info/languages_datalist.json");
 options.overrideMimeType("application/json");
 options.send(null);
 options.onreadystatechange = function(){
