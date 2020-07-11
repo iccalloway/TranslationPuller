@@ -70,23 +70,31 @@ function main(){
     } else {
         var toLanguage = "";
     }
-    var fromLanguage = document.getElementById("fromLanguage").value;
+    //var fromLanguage = document.getElementById("fromLanguage").value;
+    var fromLanguage = 'eng';
     //SPARQL Query
     word_search = "<http://kaiko.getalp.org/dbnary/"+fromLanguage+"/"+input.replace(/ /g,"_")+">"
-    var query = "\
-    PREFIX dbnary: <http://kaiko.getalp.org/dbnary#>   \n\
-    PREFIX lang: <http://kaiko.getalp.org/dbnary/"+fromLanguage+"/>    \n\
-    PREFIX lexinfo: <http://www.lexinfo.net/ontology/2.0/lexinfo#> \n\
-    PREFIX lexvo: <http://www.lexvo.org/id/iso639-3/> \n\
-    \n\
-    SELECT DISTINCT ?word, ?trans, ?written, ?sense, ?pos, ?lang WHERE {     \n\
-    "+word_search+" dbnary:refersTo ?word .   \n\
-    ?word dbnary:partOfSpeech ?pos . \n\
-    ?trans dbnary:isTranslationOf ?word;  \n\
-    dbnary:writtenForm ?written; \n\
-    dbnary:targetLanguage ?lang .    \n\
-    ?trans dbnary:gloss ?sense .  \n\
-    }";
+
+    var query=
+        'PREFIX dbnary: <http://kaiko.getalp.org/dbnary#> \n ' +
+        'PREFIX lang: <http://kaiko.getalp.org/dbnary/eng> \n ' +
+        'PREFIX lexinfo: <http://www.lexinfo.net/ontology/2.0/lexinfo#> \n ' +
+        'PREFIX lexvo: <http://www.lexvo.org/id/iso639-3/> \n ' +
+        'PREFIX skos: <http://www.w3.org/2004/02/skos/core#> \n' +
+        'PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#> \n' +
+        'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n' +
+        
+        'SELECT DISTINCT ?pos, ?sensenum, ?written, ?lang, ?def WHERE { \n ' +
+            word_search + ' dbnary:describes ?word . \n ' +
+            '?word lexinfo:partOfSpeech ?pos ; \n ' +
+            'ontolex:sense ?sense . \n ' +
+            '?trans dbnary:isTranslationOf ?sense ; \n ' +
+            'dbnary:writtenForm ?written ; \n ' +
+            'dbnary:targetLanguage ?lang . \n ' +
+            '?sense skos:definition ?definition . \n ' +
+            '?definition rdf:value ?def . \n ' +
+            '?sense dbnary:senseNumber ?sensenum . \n ' +
+    '}';
         
     var website = "http://kaiko.getalp.org/sparql?default-graph-uri=&query=";
     var extraParameters = "&format=json&timeout=0&debug=on";
@@ -107,14 +115,21 @@ function main(){
             answerbegin.innerHTML = ''            
             if (found_entries > 0) {
                 if (selected_count == 1){
-                    $entry_number = $("<p>1 entry found.</p><br>");
+                    $entry_number = $("<p>1 translation found across all languages.</p><br>");
                 } else {
-                    $entry_number = $("<p>"+found_entries+" entries found.</p>");
+                    $entry_number = $("<p>"+found_entries+" translations found across all languages.</p>");
                 }
                 $entry_number.appendTo(answerbegin);
                 var languageCheck = (toLanguage== "") ? true : toLanguage;
                 for ( var i in results ) {
-                    if(results[i].written != undefined && results[i].sense != undefined && results[i].written['xml:lang'] != undefined && results[i].sense.value != undefined && results[i].written.value != undefined && (languageCheck == true  || languageCheck == results[i].written['xml:lang'])){
+                    if(results[i].written != undefined && 
+                    results[i].sensenum != undefined && 
+                    results[i].written['xml:lang'] != undefined && 
+                    results[i].def != undefined && 
+                    results[i].sensenum.value != undefined && 
+                    results[i].written.value != undefined && 
+                    results[i].def.value != undefined && 
+                    (languageCheck == true  || languageCheck == results[i].written['xml:lang'])){
                         two = results[i].written['xml:lang'];
                         language_name = "";
                         if (three_codes[fromLanguage] != undefined){
@@ -132,7 +147,9 @@ function main(){
                         }
                         var last_item =[language_name,
                         results[i].pos.value.replace("http://www.lexinfo.net/ontology/2.0/lexinfo#", "").replace(/-/g,""),
-                        results[i].sense.value.replace(/, ''.*/g,"").replace(/[\[\]]/g, ""),
+                        results[i].def.value,
+                        //results[i].sense.value.replace(/, ''.*/g,"").replace(/[\[\]]/g, ""),
+                        //results[i].sense.value.replace(/.*ws_([0-9]).*/,'$1'),
                         results[i].written.value.replace(/[\[\]]/g, "")];
                         
                         if (test_object[last_item[0]] == undefined){
@@ -147,13 +164,14 @@ function main(){
                         }
                     }
                 }
+                             
                 if (selected_count == 0){
                     $("<p>No unique entries selected.</p>").appendTo(answerbegin);
                     return 1;
                 } else if (selected_count == 1){
-                    $entry_number = $("<p>1 unique entries selected.</p><br>");
+                    $entry_number = $("<p>1 unique translation selected.</p><br>");
                 } else {
-                    $entry_number = $("<p>"+selected_count+" unique entries selected.</p>");
+                    $entry_number = $("<p>"+selected_count+" unique translations selected.</p>");
                 }
                 $entry_number.appendTo(answerbegin);
                 sortedList = translationList.sort(function(a,b)
@@ -168,7 +186,7 @@ function main(){
                 });
                 download_value = "<a download=\""+input.replace(/[|&;$%@"<>()+,\\\/]/g, "_")+"-translation.csv\" href=\"#\" onclick=\"return ExcellentExport.csv(this, 'translationtable');\"><i><small>Export results to CSV</small></i></a><br>";
                 var $table = $( "<table id='translationtable' style='table-layout: fixed; width: 80%' class='tablesorter'></table>");
-                var $header = $("<thead><tr><th>Language <br><small><i>(Falls back on English)</i></small></th><th>Part of Speech</th><th>Sense</th><th>Word</th></tr></thead>");
+                var $header = $("<thead><tr><th>Language <!--<br><small><i>(Falls back on English)</i></small>--></th><th>Part of Speech</th><th>Sense</th><th>Word</th></tr></thead>");
                 var $bodier = $("<tbody></tbody>");
 
                 language_keys = Object.keys(test_object).sort()

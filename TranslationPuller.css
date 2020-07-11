@@ -1,3 +1,6 @@
+
+
+
 a, p, form {
     font-family: "Arial", sans-serif;
 } 
@@ -46,7 +49,7 @@ table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	padding: 4px;
 }
 table.tablesorter thead tr .header {
-	background-image: url(bg.gif);
+	background-image: url(scripts/tablesorter/bg.gif);
 	background-repeat: no-repeat;
 	background-position: center right;
 	cursor: pointer;
@@ -61,10 +64,10 @@ table.tablesorter tbody tr.odd td {
 	background-color:#deecc6;
 }
 table.tablesorter thead tr .headerSortUp {
-	background-image: url(asc.gif);
+	background-image: url(scripts/tablesorter/asc.gif);
 }
 table.tablesorter thead tr .headerSortDown {
-	background-image: url(desc.gif);
+	background-image: url(scripts/tablesorter/desc.gif);
 }
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 background-color: #bdd88d;
