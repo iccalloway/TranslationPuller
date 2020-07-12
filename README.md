@@ -1,2 +1,4 @@
 # Translation-Puller
-Works with DBnary to list word-for-word translations from Wiktionary
+This webtool uses [DBnary](http://kaiko.getalp.org/about-dbnary/) to easily identify word-for-word translations from Wiktionary.
+
+Click [here](https://iccalloway.info/translate/index.html) for a demo.

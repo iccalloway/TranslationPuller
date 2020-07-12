@@ -91,9 +91,9 @@ function main(){
             '?trans dbnary:isTranslationOf ?sense ; \n ' +
             'dbnary:writtenForm ?written ; \n ' +
             'dbnary:targetLanguage ?lang . \n ' +
-            '?sense skos:definition ?definition . \n ' +
+            '?sense skos:definition ?definition ; \n ' +
+            'dbnary:senseNumber ?sensenum . \n ' +
             '?definition rdf:value ?def . \n ' +
-            '?sense dbnary:senseNumber ?sensenum . \n ' +
     '}';
         
     var website = "http://kaiko.getalp.org/sparql?default-graph-uri=&query=";
