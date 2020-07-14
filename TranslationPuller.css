@@ -1,9 +1,14 @@
+@font-face{
+	font-family: "ComputerModern";
+	src: url('resources/cmunss.otf') format("opentype");
+}
+
+a,p,form,body{
+	font-family: "ComputerModern";
+	color:#424949;
+}
 
 
-
-a, p, form {
-    font-family: "Arial", sans-serif;
-} 
 
 body, input, option, select {
     text-align: center
@@ -16,7 +21,7 @@ table {
 
 table, th, td {
     border: 1px solid black;
-    font-family: "Arial", sans-serif;
+    /*font-family: "Arial", sans-serif;*/
 
 }
 
@@ -24,7 +29,7 @@ th, td {
     padding: 15px;
     text-align: center;
     vertical-align: middle;
-    font-family: "Arial", sans-serif;   
+    /*font-family: "Arial", sans-serif;*/   
     border: 1px solid;    
 }
 
@@ -33,7 +38,7 @@ TableSorter Things
 */ 
 
 table.tablesorter {
-	font-family:arial;
+	/*font-family:arial;*/
 	background-color: #CDCDCD;
 	margin:10px 0pt 15px;
 	font-size: 8pt;
